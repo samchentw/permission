@@ -1,0 +1,19 @@
+{
+    "name": "samchentw/permission",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Samchentw\\Permission\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "samchentw",
+            "email": "penguin.bear11290330@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.3|^8.0"
+    }
+}

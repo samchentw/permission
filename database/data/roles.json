@@ -1,0 +1,30 @@
+[
+    {
+        "name": "admin",
+        "description": "管理員",
+        "is_default": false,
+        "permissions": [
+            "Identity.Admin"
+        ]
+    },
+    {
+        "name": "member",
+        "description": "使用者",
+        "is_default": true,
+        "permissions": [
+            "Identity.Member"
+        ]
+    },
+    {
+        "name": "developer",
+        "description": "開發者",
+        "is_default": false,
+        "permissions": [
+            "Identity.Admin",
+            "Page.Role",
+            "Page.Role.Create",
+            "Page.Role.Update",
+            "Page.Role.Delete"
+        ]
+    }
+]
