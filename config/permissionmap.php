@@ -18,7 +18,7 @@ return [
         "pages" => [
             [
                 'label' => '角色管理',
-                'key' => 'Page.Permission',
+                'key' => 'Page.Role',
                 'permissions' => ['Create', 'Update', 'Delete']
             ],
             [
