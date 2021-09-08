@@ -5,7 +5,7 @@ namespace Samchentw\Permission;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
-class PermissionProvider extends ServiceProvider
+class PermissionServiceProvider extends ServiceProvider
 {
 
     /**
