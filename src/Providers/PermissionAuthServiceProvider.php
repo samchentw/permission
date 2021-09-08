@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Gate;
 use Illuminate\Auth\Access\Response;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Samchentw\Permission\Helpers\PermissionHelper;
 
 class PermissionAuthServiceProvider extends ServiceProvider
@@ -28,23 +29,24 @@ class PermissionAuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         $enable = config('permissionmap.enable', false);
-        if (!$enable) return;
 
         try {
             $permissions = PermissionHelper::getPermissions();
-        } catch (Exception $e) {
-            return;
-        }
 
-        foreach ($permissions as $p) {
-            Gate::define($p['key'], function ($user) use ($p) {
-                $rolePermission = collect($user->roles)->map(function ($roles) {
-                    return $roles->permissions;
+            foreach ($permissions as $p) {
+                Gate::define($p['key'], function ($user) use ($p, $enable) {
+                    $rolePermission = collect($user->roles)->map(function ($roles) {
+                        return $roles->permissions;
+                    });
+                    $permission = collect($rolePermission)->flatten()->unique();
+                    $check = $permission->contains($p['key']);
+
+                    if (!$enable) return true;
+                    return $check ? Response::allow() : Response::deny('你沒有此權限！');
                 });
-                $permission = collect($rolePermission)->flatten()->unique();
-                $check = $permission->contains($p['key']);
-                return $check ? Response::allow() : Response::deny('你沒有此權限！');
-            });
+            }
+        } catch (Exception $e) {
+            return false;
         }
     }
 }

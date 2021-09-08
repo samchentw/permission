@@ -49,6 +49,7 @@ class RoleController extends Controller
      *
      * @bodyParam  name string required 
      * @bodyParam  description string 
+     * @bodyParam  is_default boolean 
      * @bodyParam permissions string[] required 
      */
     public function store(Request $request)
@@ -56,6 +57,7 @@ class RoleController extends Controller
         $request->validate([
             'name' => ['string', 'required'],
             'description' => ['string', 'nullable'],
+            'is_default' => ['boolean', 'nullable'],
             'permissions' => ['array', 'nullable'],
             'permissions.*' => ['string']
         ]);
@@ -72,22 +74,24 @@ class RoleController extends Controller
      * @group RoleController(角色)
      * Role4 修改角色
      *
-     * @bodyParam  name string  
+     * @bodyParam  name string  required
      * @bodyParam  description string  
+     * @bodyParam  is_default boolean
      * @bodyParam permissions string[]  
      */
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => ['string', 'nullable'],
+            'name' => ['string', 'required'],
             'description' => ['string', 'nullable'],
+            'is_default' => ['boolean', 'nullable'],
             'permissions' => ['array', 'nullable'],
             'permissions.*' => ['string']
         ]);
         $body = $request->only([
             "name", "description", "is_default", "permissions"
         ]);
-        $this->roleRepository->update(array_filter($body), $id);
+        $this->roleRepository->update($body, $id);
     }
 
     /**
