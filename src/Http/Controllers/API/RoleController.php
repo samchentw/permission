@@ -47,16 +47,22 @@ class RoleController extends Controller
      * @group RoleController(角色)
      * Role3 建立角色
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @bodyParam  name string required 
+     * @bodyParam  description string 
+     * @bodyParam permissions string[] required 
      */
     public function store(Request $request)
     {
         $request->validate([
             'name' => ['string', 'required'],
             'description' => ['string', 'nullable'],
+            'permissions' => ['array', 'nullable'],
+            'permissions.*' => ['string']
         ]);
-      
+
+        $permission = $request->get('permissions', []);
+        $request->merge(['permission' => $permission]);
+
         $this->roleRepository->create($request->only([
             "name", "description", "is_default", "permissions"
         ]));
@@ -66,21 +72,22 @@ class RoleController extends Controller
      * @group RoleController(角色)
      * Role4 修改角色
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @bodyParam  name string  
+     * @bodyParam  description string  
+     * @bodyParam permissions string[]  
      */
     public function update(Request $request, $id)
     {
-        if (Gate::denies('Page.Role.Update')) {
-            return response()->json([
-                'message' => '你沒有權限'
-            ], 403);
-        }
-
-        $this->roleRepository->update($request->only([
+        $request->validate([
+            'name' => ['string', 'nullable'],
+            'description' => ['string', 'nullable'],
+            'permissions' => ['array', 'nullable'],
+            'permissions.*' => ['string']
+        ]);
+        $body = $request->only([
             "name", "description", "is_default", "permissions"
-        ]), $id);
+        ]);
+        $this->roleRepository->update(array_filter($body), $id);
     }
 
     /**
@@ -92,12 +99,6 @@ class RoleController extends Controller
      */
     public function delete($id)
     {
-        if (Gate::denies('Page.Role.Delete')) {
-            return response()->json([
-                'message' => '你沒有權限'
-            ], 403);
-        }
-
         $this->roleRepository->destroy($id);
     }
 

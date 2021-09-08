@@ -18,8 +18,8 @@ if (config('permissionmap.role_api_enable', false)) {
         // 新增角色
         Route::post('', [RoleController::class, 'store'])->middleware(['can:Page.Role.Create'])->name('store');
         // 修改角色
-        Route::put('{id}', [RoleController::class, 'update'])->name('update');
+        Route::put('{id}', [RoleController::class, 'update'])->middleware(['can:Page.Role.Update'])->name('update');
         // 刪除角色
-        Route::delete('{id}', [RoleController::class, 'delete'])->name('delete');
+        Route::delete('{id}', [RoleController::class, 'delete'])->middleware(['can:Page.Role.Delete'])->name('delete');
     });
 }
