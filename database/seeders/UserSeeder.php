@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
         foreach ($users as $user) {
             $userRoleNames = $user->role;
             $entity = User::create([
-                'account' => $user->account,
+                // 'account' => $user->account,
                 'name' => $user->name,
                 'email' => $user->email,
                 'password' => Hash::make($user->password),
