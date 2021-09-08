@@ -1,6 +1,6 @@
 <?php
 
-namespace Samchentw\Permission\Providers;
+namespace Samchentw\Permission;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -15,7 +15,9 @@ class PermissionProvider extends ServiceProvider
      */
     public function register()
     {
-        // $this->mergeConfigFrom(__DIR__.'/../../config/permissionmap.php', 'permissionmap');
+        $this->app->register(
+            Providers\PermissionAuthServiceProvider::class,
+        );  
     }
 
     /**
@@ -41,37 +43,37 @@ class PermissionProvider extends ServiceProvider
         }
 
         $this->publishes([
-            __DIR__.'/../../config/permissionmap.php' => config_path('permissionmap.php'),
+            __DIR__.'/../config/permissionmap.php' => config_path('permissionmap.php'),
         ], 'permission-map-config');
 
         $this->publishes([
-            __DIR__ . '/../../database/migrations/2021_05_28_012551_create_roles_table.php' => 
+            __DIR__ . '/../database/migrations/2021_05_28_012551_create_roles_table.php' => 
             database_path('migrations/2021_05_28_012551_create_roles_table.php')
         ], 'samchen-permission-migrations');
 
         $this->publishes([
-            __DIR__ . '/../../database/migrations/2021_05_28_012754_create_role_users_table.php' => 
+            __DIR__ . '/../database/migrations/2021_05_28_012754_create_role_users_table.php' => 
             database_path('migrations/2021_05_28_012754_create_role_users_table.php')
         ], 'samchen-permission-migrations');
 
         $this->publishes([
-            __DIR__ . '/../../database/seeders/RoleSeeder.php' => database_path('seeders/RoleSeeder.php')
+            __DIR__ . '/../database/seeders/RoleSeeder.php' => database_path('seeders/RoleSeeder.php')
         ], 'samchen-permission-seeder');
 
         $this->publishes([
-            __DIR__ . '/../../database/data/roles.json' => database_path('data/roles.json')
+            __DIR__ . '/../database/data/roles.json' => database_path('data/roles.json')
         ], 'samchen-permission-seeder');
 
         $this->publishes([
-            __DIR__ . '/../../stubs/app/Models/Role.php' => app_path('Models/Role.php')
+            __DIR__ . '/../stubs/app/Models/Role.php' => app_path('Models/Role.php')
         ]);
 
         $this->publishes([
-            __DIR__ . '/../../database/seeders/UserSeeder.php' => database_path('seeders/UserSeeder.php')
+            __DIR__ . '/../database/seeders/UserSeeder.php' => database_path('seeders/UserSeeder.php')
         ], 'samchen-permission-seeder');
 
         $this->publishes([
-            __DIR__ . '/../../database/data/users.json' => database_path('data/users.json')
+            __DIR__ . '/../database/data/users.json' => database_path('data/users.json')
         ], 'samchen-permission-seeder');
 
        
@@ -89,7 +91,7 @@ class PermissionProvider extends ServiceProvider
             'domain' => null,
             'prefix' => 'api',
         ], function () {
-            $this->loadRoutesFrom(__DIR__ . '/../../routes/role.php');
+            $this->loadRoutesFrom(__DIR__ . '/../routes/role.php');
         });
     }
 }

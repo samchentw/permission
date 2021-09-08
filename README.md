@@ -9,13 +9,12 @@ todo...
 ## Laravel
 After updating composer, add the ServiceProvider to the providers array in config/app.php
 ```sh
-Samchentw\Permission\Providers\PermissionProvider::class,
-Samchentw\Permission\Providers\PermissionAuthServiceProvider::class
+Samchentw\Permission\PermissionProvider::class
 ```
 
 Publish the config file by running: 
 ```sh
-$ php artisan vendor:publish --provider="Samchentw\Permission\Providers\PermissionProvider"
+$ php artisan vendor:publish --provider="Samchentw\Permission\PermissionProvider"
 ```
 
 ## Feature
