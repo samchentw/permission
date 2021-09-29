@@ -26,9 +26,8 @@ class RoleRepository extends Repository
         return $this->model()::whereIn('id', $ids)->get();
     }
 
-    public function getRolesById($id)
+    public function getRolesById($id): Role
     {
         return $this->model()::where('id', $id)->first();
     }
-    
 }

@@ -8,6 +8,7 @@ use Gate;
 use Illuminate\Auth\Access\Response;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Samchentw\Permission\Helpers\PermissionHelper;
+use App\Models\User;
 
 class PermissionAuthServiceProvider extends ServiceProvider
 {
@@ -34,11 +35,8 @@ class PermissionAuthServiceProvider extends ServiceProvider
             $permissions = PermissionHelper::getPermissions();
 
             foreach ($permissions as $p) {
-                Gate::define($p['key'], function ($user) use ($p, $enable) {
-                    $rolePermission = collect($user->roles)->map(function ($roles) {
-                        return $roles->permissions;
-                    });
-                    $permission = collect($rolePermission)->flatten()->unique();
+                Gate::define($p['key'], function (User $user) use ($p, $enable) {
+                    $permission = collect($user->allPermission());
                     $check = $permission->contains($p['key']);
 
                     if (!$enable) return true;
