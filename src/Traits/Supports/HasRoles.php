@@ -32,6 +32,7 @@ trait HasRoles
             return $roles->permissions;
         })->flatten()
             ->unique()
+            ->values()
             ->all();
     }
 
