@@ -33,14 +33,10 @@ class PermissionAuthServiceProvider extends ServiceProvider
 
         try {
             $permissions = PermissionHelper::getPermissions();
-
             foreach ($permissions as $p) {
                 Gate::define($p['key'], function (User $user) use ($p, $enable) {
-                    $permission = collect($user->allPermission());
-                    $check = $permission->contains($p['key']);
-
                     if (!$enable) return true;
-                    return $check ? Response::allow() : Response::deny('你沒有此權限！');
+                    return $user->havePermission($p['key']) ? Response::allow() : Response::deny('你沒有此權限！');
                 });
             }
         } catch (Exception $e) {

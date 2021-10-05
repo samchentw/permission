@@ -5,18 +5,7 @@ namespace Samchentw\Permission\Helpers;
 class PermissionHelper
 {
 
-    private static function shortNameMap($input)
-    {
-        $dict = [
-            'Create' => '新增',
-            'Update' => '修改',
-            'Delete' => '刪除',
-        ];
-
-        return $dict[$input];
-    }
-
-    public static function getPermissionMap()
+    public static function getPermissionMapConfig()
     {
         $permission_map = require config_path('permissionmap.php');
         return $permission_map;
@@ -24,7 +13,7 @@ class PermissionHelper
 
     public static function getPermissions()
     {
-        $permissions = static::getPermissionMap();
+        $permissions = static::getPermissionMapConfig();
         $groups = $permissions['groups'];
 
         $pages = $groups['pages'];
@@ -44,11 +33,23 @@ class PermissionHelper
                 $results = $results->concat($detail);
                 unset($page['permissions']);
                 $page['group'] = $page['label'] . '群組';
-            } 
+            }
             $results->push($page);
         }
 
         $results = $results->concat($features);
         return $results->all();
+    }
+
+
+    private static function shortNameMap($input)
+    {
+        $dict = [
+            'Create' => '新增',
+            'Update' => '修改',
+            'Delete' => '刪除',
+        ];
+
+        return $dict[$input];
     }
 }

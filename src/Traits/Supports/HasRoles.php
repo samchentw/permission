@@ -4,7 +4,7 @@ namespace Samchentw\Permission\Traits\Supports;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\Role;
-use Gate;
+use Illuminate\Support\Facades\Gate;
 
 
 trait HasRoles
@@ -26,6 +26,9 @@ trait HasRoles
         return $this->belongsToMany($this->roleModel);
     }
 
+    /**
+     * @return array string
+     */
     public function allPermission()
     {
         return $this->roles()->get()->map(function (Role $roles) {
@@ -34,6 +37,15 @@ trait HasRoles
             ->unique()
             ->values()
             ->all();
+    }
+
+    /**
+     * @return boolean
+     */
+    public function havePermission(string $psermission)
+    {
+        $userAllPermission = $this->allPermission();
+        return in_array($psermission, $userAllPermission);
     }
 
     public function addRolesByIds($ids)
