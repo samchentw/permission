@@ -20,7 +20,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Samchentw\\Permission\\PermissionServiceProvider::class"
+                "Samchentw\\Permission\\PermissionServiceProvider"
             ]
         }
     }
