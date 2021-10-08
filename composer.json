@@ -16,5 +16,12 @@
     "require": {
         "php": "^7.3|^8.0",
         "samchentw/common": "^2.3"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Samchentw\\Permission\\PermissionServiceProvider::class"
+            ]
+        }
     }
 }
