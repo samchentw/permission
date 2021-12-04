@@ -91,28 +91,28 @@ Gate will be automatically registered.
         $permission = collect($user->allPermission());
         $check = $permission->contains("Page.Role");
         if (!$enable) return true;
-        return $check ? Response::allow() : Response::deny('你沒有此權限！');
+        return $check ? Response::allow() : Response::deny(trans('messages.not_permission'));
     });
 
      Gate::define("Page.Role.Create", function (User $user) use ($enable) {
         $permission = collect($user->allPermission());
         $check = $permission->contains("Page.Role.Create");
         if (!$enable) return true;
-        return $check ? Response::allow() : Response::deny('你沒有此權限！');
+        return $check ? Response::allow() : Response::deny(trans('messages.not_permission'));
     });
 
     Gate::define("Identity.Admin", function (User $user) use ($enable) {
         $permission = collect($user->allPermission());
         $check = $permission->contains("Identity.Admin");
         if (!$enable) return true;
-        return $check ? Response::allow() : Response::deny('你沒有此權限！');
+        return $check ? Response::allow() : Response::deny(trans('messages.not_permission'));
     });
 
     Gate::define("Identity.Member", function (User $user) use ($enable) {
         $permission = collect($user->allPermission());
         $check = $permission->contains("Identity.Member");
         if (!$enable) return true;
-        return $check ? Response::allow() : Response::deny('你沒有此權限！');
+        return $check ? Response::allow() : Response::deny(trans('messages.not_permission'));
     });
 
 ```
