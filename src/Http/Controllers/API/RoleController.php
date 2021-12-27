@@ -63,7 +63,7 @@ class RoleController extends Controller
         ]);
 
         $permission = $request->get('permissions', []);
-        $request->merge(['permission' => $permission]);
+        $request->merge(['permissions' => $permission]);
 
         $this->roleRepository->create($request->only([
             "name", "description", "is_default", "permissions"
