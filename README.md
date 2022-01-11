@@ -1,4 +1,5 @@
 # Permission
+[![tests](https://github.com/samchentw/permission/actions/workflows/tests.yml/badge.svg)](https://github.com/samchentw/permission/actions/workflows/tests.yml)  
 1.create roles table  
 2.permission management  
 3.Automatically register Laravel Gate
