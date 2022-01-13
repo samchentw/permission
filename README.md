@@ -1,4 +1,5 @@
 # Permission
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/samchentw/permission.svg?style=flat-square)](https://packagist.org/packages/samchentw/permission)
 [![tests](https://github.com/samchentw/permission/actions/workflows/tests.yml/badge.svg)](https://github.com/samchentw/permission/actions/workflows/tests.yml)  
 1.create roles table  
 2.permission management  
