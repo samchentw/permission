@@ -3,35 +3,34 @@ name: tests
 on: [push]
 
 jobs:
-    test:
+  test:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [7.4, 8.0, 8.1]
+        laravel: [8, 9]
+        exclude:
+          - php: 7.4
+            laravel: 9
 
-        runs-on: ubuntu-20.04
-        strategy:
-            fail-fast: true
-            matrix:
-                php: [ 7.4, 8.0]
-                laravel: [8.*]
-                dependency-version: [prefer-lowest, prefer-stable]
-                include:
-                    - laravel: 8.*
-                      testbench: ^6.23
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
 
-        name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
+          tools: composer:v2
+          coverage: none
 
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: ${{ matrix.php }}
-                  extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
-                  coverage: none
-
-            - name: Install dependencies
-              run: |
-                      composer require "illuminate/contracts=${{ matrix.laravel }}" --no-update
-                      composer update --prefer-dist --no-interaction --no-progress
-            - name: Execute tests
-              run: vendor/bin/phpunit
+      - name: Install dependencies
+        run: |
+          composer require "illuminate/contracts=^${{ matrix.laravel }}" --no-update
+          composer update --prefer-dist --no-interaction --no-progress
+      - name: Execute tests
+        run: vendor/bin/phpunit
