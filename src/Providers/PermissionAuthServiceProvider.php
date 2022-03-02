@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Access\Response;
 use Samchentw\Permission\Helpers\PermissionHelper;
 use App\Models\User;
+use ReflectionClass;
+use Samchentw\Permission\Traits\Supports\HasRoles;
 
 class PermissionAuthServiceProvider extends ServiceProvider
 {
@@ -32,10 +34,14 @@ class PermissionAuthServiceProvider extends ServiceProvider
 
         try {
             $permissions = PermissionHelper::getPermissions();
-            foreach ($permissions as $p) {
-                Gate::define($p['key'], function (User $user) use ($p, $enable) {
-                    if (!$enable) return true;
+            $reflectionClass = new ReflectionClass(User::class);
+            $useTrits = array_keys($reflectionClass->getTraits());
+            $noRoleTrites = !in_array(HasRoles::class, $useTrits);
 
+            foreach ($permissions as $p) {
+                Gate::define($p['key'], function (User $user) use ($p, $enable, $noRoleTrites) {
+                    if (!$enable) return Response::allow();
+                    if ($noRoleTrites) return Response::deny(trans('messages.not_permission'));
                     return $user->havePermission($p['key']) ? Response::allow() : Response::deny(trans('messages.not_permission'));
                 });
             }
